@@ -8,8 +8,7 @@ spec:
       containers:
       - name: exporter
         args:
-        - --watch-kube-secrets
-        - --watch-dir=/var/lib/rancher/k3s/server/tls
+        - --watch-kube-secrets=true
         securityContext:
           runAsUser: 0
         volumeMounts:

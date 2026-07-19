@@ -4,5 +4,5 @@ metadata:
   name: x509-certificate-exporter
 rules:
 - apiGroups: [""]
-  resources: ["secrets"]
+  resources: ["secrets", "namespaces"]
   verbs: ["get", "list", "watch"]

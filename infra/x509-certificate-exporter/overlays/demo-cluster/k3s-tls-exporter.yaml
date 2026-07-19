@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: x509-k3s-tls-exporter
+  namespace: monitoring
+  labels:
+    app: x509-k3s-tls-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: x509-k3s-tls-exporter
+  template:
+    metadata:
+      labels:
+        app: x509-k3s-tls-exporter
+    spec:
+      containers:
+      - name: exporter
+        image: enix/x509-certificate-exporter:3.11.0
+        args:
+        - --watch-dir=/var/lib/rancher/k3s/server/tls
+        ports:
+        - name: metrics
+          containerPort: 9793
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: k3s-tls
+          mountPath: /var/lib/rancher/k3s/server/tls
+          readOnly: true
+      volumes:
+      - name: k3s-tls
+        hostPath:
+          path: /var/lib/rancher/k3s/server/tls
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: x509-k3s-tls-exporter
+  namespace: monitoring
+  labels:
+    app: x509-k3s-tls-exporter
+spec:
+  ports:
+  - name: metrics
+    port: 9793
+    targetPort: 9793
+  selector:
+    app: x509-k3s-tls-exporter
