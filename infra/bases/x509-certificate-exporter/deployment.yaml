@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: x509-certificate-exporter
+  labels:
+    app: x509-certificate-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: x509-certificate-exporter
+  template:
+    metadata:
+      labels:
+        app: x509-certificate-exporter
+    spec:
+      serviceAccountName: x509-certificate-exporter
+      containers:
+      - name: exporter
+        image: enix/x509-certificate-exporter:3.11.0
+        args:
+        - --watch-kube-secrets
+        ports:
+        - name: metrics
+          containerPort: 9793
