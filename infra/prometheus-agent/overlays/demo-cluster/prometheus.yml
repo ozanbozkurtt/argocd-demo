@@ -12,3 +12,6 @@ scrape_configs:
       - targets:
         - 'argocd-metrics.argocd.svc.cluster.local:8082'
         - 'argocd-server-metrics.argocd.svc.cluster.local:8083'
+
+remote_write:
+  - url: 'http://192.168.1.99:9090/api/v1/write'
