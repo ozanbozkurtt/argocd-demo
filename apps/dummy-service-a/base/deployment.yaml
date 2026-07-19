@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: dummy-a
-        image: nginx:1.25
+        image: nginx:1.26-alpine
         ports:
         - containerPort: 80
