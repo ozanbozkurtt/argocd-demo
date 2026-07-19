@@ -1,6 +1,8 @@
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
+  external_labels:
+    cluster: demo-cluster
 
 scrape_configs:
   - job_name: 'prometheus-agent'
@@ -29,6 +31,9 @@ scrape_configs:
         - 'x509-certificate-exporter.monitoring.svc.cluster.local:9793'
         - 'x509-k3s-tls-exporter.monitoring.svc.cluster.local:9793'
 
+  # NOTE: job relabeled to 'kubelet' + metrics_path label added so the
+  # kubernetes-mixin recording rules (which filter job="kubelet",
+  # metrics_path="/metrics/cadvisor") match these series.
   - job_name: 'kubernetes-nodes'
     scheme: https
     tls_config:
@@ -38,6 +43,13 @@ scrape_configs:
       credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
     kubernetes_sd_configs:
       - role: node
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_node_name]
+        target_label: node
+      - target_label: job
+        replacement: kubelet
+      - target_label: metrics_path
+        replacement: /metrics
 
   - job_name: 'kubernetes-cadvisor'
     scheme: https
@@ -49,6 +61,13 @@ scrape_configs:
       credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
     kubernetes_sd_configs:
       - role: node
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_node_name]
+        target_label: node
+      - target_label: job
+        replacement: kubelet
+      - target_label: metrics_path
+        replacement: /metrics/cadvisor
 
 remote_write:
   - url: 'http://192.168.1.99:9090/api/v1/write'
