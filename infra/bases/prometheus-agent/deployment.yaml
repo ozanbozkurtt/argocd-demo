@@ -20,7 +20,7 @@ spec:
       - name: prometheus
         image: prom/prometheus:v3.1.0
         args:
-        - "--enable-feature=agent"
+        - "--agent"
         - "--config.file=/etc/prometheus/prometheus.yml"
         - "--storage.agent.path=/prometheus"
         ports:
