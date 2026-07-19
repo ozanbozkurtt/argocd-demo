@@ -6,6 +6,6 @@ resources:
 
 configMapGenerator:
 - name: prometheus-agent-config
-  namespace: kube-system
+  namespace: monitoring
   files:
   - prometheus.yml
