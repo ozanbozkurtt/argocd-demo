@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummy-service-b
+  labels:
+    app: dummy-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dummy-b
+  template:
+    metadata:
+      labels:
+        app: dummy-b
+    spec:
+      containers:
+      - name: dummy-b
+        image: nginx:1.25
+        ports:
+        - containerPort: 80
