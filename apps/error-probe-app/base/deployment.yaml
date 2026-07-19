@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: error-probe-deployment
+  labels:
+    app: error-probe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: error-probe
+  template:
+    metadata:
+      labels:
+        app: error-probe
+    spec:
+      containers:
+      - name: probe-container
+        image: nginx:1.25
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 9999
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9999
+          initialDelaySeconds: 5
+          periodSeconds: 5

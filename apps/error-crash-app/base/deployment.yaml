@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: error-crash-deployment
+  labels:
+    app: error-crash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: error-crash
+  template:
+    metadata:
+      labels:
+        app: error-crash
+    spec:
+      containers:
+      - name: crash-container
+        image: busybox:1.36
+        command: ["sh", "-c", "echo 'Sistem baslatiliyor...'; sleep 3; echo 'Kritik Hata!'; exit 1"]

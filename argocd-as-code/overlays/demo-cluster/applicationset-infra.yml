@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infra-demo-cluster
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: 'https://github.com/ozanbozkurtt/argocd-demo.git'
+      revision: HEAD
+      directories:
+      - path: infra/*/overlays/demo-cluster
+      - path: infra/argocd/overlays/demo-cluster
+        exclude: true
+  template:
+    metadata:
+      name: '{{path[1]}}'
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/ozanbozkurtt/argocd-demo.git'
+        targetRevision: HEAD
+        path: '{{path}}'
+        kustomize: {}
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: '{{path[1]}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true

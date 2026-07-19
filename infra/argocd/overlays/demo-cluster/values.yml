@@ -1,0 +1,41 @@
+configs:
+  params:
+    applicationsetcontroller.policy: "sync"
+  cm:
+    kustomize.buildOptions: "--enable-helm"
+
+controller:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+      namespace: monitoring
+      additionalLabels:
+        release: monitoring
+
+server:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+      namespace: monitoring
+      additionalLabels:
+        release: monitoring
+
+repoServer:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+      namespace: monitoring
+      additionalLabels:
+        release: monitoring
+
+applicationSet:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+      namespace: monitoring
+      additionalLabels:
+        release: monitoring
