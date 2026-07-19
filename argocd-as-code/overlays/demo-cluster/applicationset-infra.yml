@@ -32,3 +32,4 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - ApplyOutOfSyncOnly=true
+          - FailOnSharedResource=false
