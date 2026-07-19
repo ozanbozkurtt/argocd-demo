@@ -20,6 +20,7 @@ spec:
         image: enix/x509-certificate-exporter:3.11.0
         args:
         - --watch-kube-secrets
+        - --secret-type=kubernetes.io/tls:tls.crt
         ports:
         - name: metrics
           containerPort: 9793
