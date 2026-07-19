@@ -4,7 +4,4 @@ kind: Kustomization
 namespace: monitoring
 
 resources:
-- serviceaccount.yaml
-- clusterrole.yaml
-- clusterrolebinding.yaml
-- deployment.yaml
+- namespace.yml
